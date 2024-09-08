@@ -5,12 +5,19 @@ public class Node {
 
     // ATTRIBUTES
     // Identifier for the Node.
-    private String id;
+    private int id;
+    // Coordinate X
+    private int x;
+    // Coordinate Y
+    private int y;
     // List of ways from this Node to others.
     private List<Way> ways;
 
     // CONSTRUCTOR
-    public Node() {
+    public Node(int id, int x, int y) {
+        this.id = id;
+        this.x = x;
+        this.y = y;
         this.ways = new ArrayList<>();
     }
 
@@ -52,12 +59,28 @@ public class Node {
     }
 
     // GETTERS AND SETTERS
-    public String getId() {
+    public int getId() {
         return this.id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
+    }
+
+    public int getX() {
+        return this.x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public int getY() {
+        return this.y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
     }
 
     public List<Way> getWays() {

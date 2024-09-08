@@ -4,13 +4,14 @@ public class Way {
     // This node represents the destination node for this way.
     private Node node;
     // This is the cost or distance to get to the node.
-    private int cost;
+    private double cost;
     // This represents the pheromones that are in this way.
     private double pheromones;
 
     // CONSTRUCTOR
-    public Way() {
-        this.cost = 0; // This can change to get automatically the euclidian distance.
+    public Way(Node node, double cost) {
+        this.node = node;
+        this.cost = cost;
         this.pheromones = 0.1;
     }
 
@@ -23,11 +24,11 @@ public class Way {
         this.node = node;
     }
 
-    public int getCost() {
+    public double getCost() {
         return this.cost;
     }
 
-    public void setCost(int cost) {
+    public void setCost(double cost) {
         this.cost = cost;
     }
 

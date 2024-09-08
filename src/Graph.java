@@ -48,17 +48,23 @@ public class Graph {
                 // If nodeLine is true we are in the "NODE_COORD_SECTION", so we'll create nodes.
                 if (nodeLine) {
 
-                    // Divide the line info in parts.
-                    String[] parts = line.split(" ");
+                    // Divide the line info in parts with the regex "\\s+" (means one or more white spaces).
+                    String[] parts = line.split("\\s+");
 
-                    // Parse line parts to integer.
-                    int id = Integer.parseInt(parts[0]);
-                    int x = Integer.parseInt(parts[1]);
-                    int y = Integer.parseInt(parts[2]);
+                    try {
 
-                    // Here we add the node.
-                    nodes.add(new Node(id, x, y));
+                        // Parse line parts to integer.
+                        int id = Integer.parseInt(parts[0]);
+                        int x = Integer.parseInt(parts[1]);
+                        int y = Integer.parseInt(parts[2]);
 
+                        // Here we add the node.
+                        nodes.add(new Node(id, x, y));
+
+                    }
+                    catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
@@ -91,6 +97,12 @@ public class Graph {
                 to.getWays().add(new Way(from, distance));
 
             }
+        }
+    }
+
+    public void printNodes() {
+        for (Node node : this.nodes) {
+            System.out.println("ID: " + node.getId() + ", X: " + node.getX() + ", Y: " + node.getY());
         }
     }
 

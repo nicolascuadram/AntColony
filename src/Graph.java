@@ -8,11 +8,12 @@ public class Graph {
 
     // ATTRIBUTES
     private List<Node> nodes;
+    private List<Way> ways;
 
     // CONSTRUCTOR
     public Graph () {
         this.nodes = loadGraphWithFile();
-        generateWays();
+        this.ways = generateWays();
     }
     
     private List<Node> loadGraphWithFile() {
@@ -75,7 +76,9 @@ public class Graph {
         return nodes;
     }
 
-    private void generateWays() {
+    private List<Way> generateWays() {
+
+        List<Way> ways = new ArrayList<>();
 
         for (int i = 0; i < this.nodes.size(); i++) {
 
@@ -86,17 +89,34 @@ public class Graph {
 
                 // Here we get the node where the path will end.
                 Node to = this.nodes.get(j);
-    
-                // Calculate the Euclidean distance between nodes.
-                int distance = (int) Math.sqrt(Math.pow(from.getX() - to.getX(), 2) + Math.pow(from.getY() - to.getY(), 2));
-    
-                // We create the way and add it to the "from" node.
-                from.getWays().add(new Way(to, distance));
-    
-                // We create the reverse path and add it to the "to" node.
-                to.getWays().add(new Way(from, distance));
+        
+                // We create the way and add it to the nodes.
+                Way way = new Way(from, to);
+                from.getWays().add(way);
+                to.getWays().add(way);
+
+                // Also we add the way to the graph.
+                ways.add(way);
 
             }
+
+        }
+
+        return ways;
+    }
+
+    public void updatePheromones(double evaporationRate, Route route) {
+        // evaporationRate = 0.01
+        for (Way way : this.ways) {
+
+            double evaporation = ((1 - evaporationRate) * way.getPheromones());
+            double pheromonesContribution = 0;
+
+            if (route.getWays().contains(way)) {
+                pheromonesContribution = (1 / route.getTotalCost());
+            }
+            
+            way.setPheromones(evaporation + pheromonesContribution);
         }
     }
 
@@ -109,6 +129,10 @@ public class Graph {
     // GETTERS AND SETTERS
     public List<Node> getNodes() {
         return this.nodes;
+    }
+
+    public List<Way> getWays() {
+        return this.ways;
     }
 
 }

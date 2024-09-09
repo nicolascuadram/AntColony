@@ -7,7 +7,7 @@ public class Route {
     // This array contains all the ways that an ant has passed through in this route.
     private List<Way> ways;
     // This represents the sum of costs for all the nodes in this route.
-    private int totalCost;
+    private double totalCost;
 
     // CONSTRUCTOR
     public Route() {
@@ -15,10 +15,9 @@ public class Route {
         this.totalCost = 0;
     }
 
-    public void updatePheromones() {
-        // evaporation = 0.01
-        // learning = 1
-        // new pheromones = ((1 - evaporation) * pheromones) + SUM(learning / totalCost) | 0
+    public void addWay(Way way) {
+        this.ways.add(way);
+        this.totalCost = this.totalCost + way.getCost();
     }
 
     // GETTERS AND SETTERS
@@ -30,11 +29,11 @@ public class Route {
         this.ways = ways;
     }
 
-    public int getTotalCost() {
-        return totalCost;
+    public double getTotalCost() {
+        return this.totalCost;
     }
 
-    public void setTotalCost(int totalCost) {
+    public void setTotalCost(double totalCost) {
         this.totalCost = totalCost;
     }
 

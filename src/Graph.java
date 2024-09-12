@@ -16,6 +16,7 @@ public class Graph {
         this.ways = generateWays();
     }
     
+    // Method to load graph info with file.
     private List<Node> loadGraphWithFile() {
 
         // Array to save nodes.
@@ -76,6 +77,7 @@ public class Graph {
         return nodes;
     }
 
+    // Method to generate each way.
     private List<Way> generateWays() {
 
         List<Way> ways = new ArrayList<>();
@@ -106,18 +108,21 @@ public class Graph {
     }
 
     public void updatePheromones(Route route) {
-        // evaporationRate = 0.01
+        
         for (Way way : this.ways) {
 
+            // EvaporationRate = 0.01
             double evaporation = ((1 - 0.01) * way.getPheromones());
             double pheromonesContribution = 0;
 
+            // Learning = 1
             if (route.getWays().contains(way)) {
                 pheromonesContribution = (1 / route.getTotalCost());
             }
             
             way.setPheromones(evaporation + pheromonesContribution);
         }
+
     }
 
     public void printNodes() {

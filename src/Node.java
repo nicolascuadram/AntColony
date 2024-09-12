@@ -44,7 +44,7 @@ public class Node {
         so we'll divide all the probabilities for the SUM.
         */
         for (int i = 0; i < this.ways.size(); i++) {
-            probabilities[i] = (probabilities[i] / totalProbability);
+            probabilities[i] /= totalProbability;
         }
 
         return probabilities;

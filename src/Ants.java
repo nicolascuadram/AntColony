@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -11,6 +12,7 @@ public class Ants {
     private Node objective;
     private List<Route> routes;
     private int[] available;
+    private Random random;
 
     // CONSTRUCTOR
     public Ants(Graph graph) {
@@ -19,8 +21,10 @@ public class Ants {
         this.origin = graph.getNodes().get(0);
         this.objective = graph.getNodes().get(this.size - 1);
         this.available = new int[this.size];
+        this.random = new Random();
     }
 
+    // This method is used to generate n ants routes.
     public void generateRoutes(int n) {
 
         // List of routes for all the ants.
@@ -31,6 +35,7 @@ public class Ants {
 
             // Create the route.
             Route route = createRoute(this.origin);
+            System.out.println("Route: " + i);
 
             // Update ways pheromones.
             this.graph.updatePheromones(route);
@@ -42,27 +47,7 @@ public class Ants {
         
     }
 
-    public void generateRoutesForCost(int n) {
-
-        this.routes = new ArrayList<>();
-
-        Route route;
-        do {
-
-            // Create the route.
-            route = createRoute(this.origin);
-
-            // Update ways pheromones.
-            this.graph.updatePheromones(route);
-
-            // Add the route to the routes list.
-            this.routes.add(route);
-            
-        }
-        while (route.getTotalCost() > n);
-
-    }
-
+    // This method is used to create each ant route.
     private Route createRoute(Node actualNode) {
 
         // Generate a new route.
@@ -71,7 +56,7 @@ public class Ants {
         // Adding the origin node.
         route.getNodes().add(actualNode);
 
-        // Reset available nodes.
+        // Reset available nodes, to not repeat nodes in the route.
         resetAvailable();
 
         // Cycle to iterate for all the nodes of the graph (less origin and objective).
@@ -79,7 +64,6 @@ public class Ants {
 
             // We'll select the next node for this route.
             Node nextNode = selectRandomNode(actualNode);
-            //System.out.println(nextNode.getId());
 
             /*
             We need to search for the way to get to the next node from the actual node,
@@ -100,24 +84,29 @@ public class Ants {
         return route;
     }
 
+    // This method will reset te info in available array, 1 for available, 0 for not.
     private void resetAvailable() {
 
+        // 1 for all the nodes.
+        Arrays.fill(this.available, 1);
+
+        // 0 for origin and objective.
         this.available[0] = 0;
-
-        for (int i = 1; i < this.available.length - 1; i++) {
-            this.available[i] = graph.getNodes().get(i).getId();
-        }
-
         this.available[this.available.length - 1] = 0;
+
     }
 
+    // This method is used to choose a random node with probabilities.
     private Node selectRandomNode(Node node) {
 
+        // We'll get the probabilities,
         double[] probabilities = node.getProbabilities();
 
+        // This lists will contain info for available nodes and their probabilities.
         List<Node> availableNodes = new ArrayList<>();
         List<Double> availableProbabilities = new ArrayList<>();
 
+        // Here we add available info.
         for (int i = 0; i < probabilities.length; i++) {
             if (this.available[i] != 0) {
                 availableNodes.add(this.graph.getNodes().get(i));
@@ -125,34 +114,48 @@ public class Ants {
             }
         }
 
+        // If the available probabilities sum are not 1 we need to normalize probabilities.
         double[] normalizedProbabilities = normalizeProbabilities(availableProbabilities);
 
-        double random = new Random().nextDouble();
+        // New random between 0 and 1.
+        double rand = this.random.nextDouble();
+
+        // Counter for probabilities.
         double count = 0;
 
         for (int i = 0; i < normalizedProbabilities.length; i++) {
 
+            // Here we sum the probabilities
             count += normalizedProbabilities[i];
 
-            if (random <= count){
+            // We'll select the node in the iteration when random is <= count.
+            if (rand <= count){
                 Node selectedNode = availableNodes.get(i);
                 this.available[graph.getNodes().indexOf(selectedNode)] = 0;
                 return selectedNode;
             }
         }
-        System.out.println("null node, " + count + ", " + random);
+
         return null;
     }
 
+    // Method to normalize probabilities.
     private double[] normalizeProbabilities(List<Double> availableProbabilities) {
+        
+        // Here we use stream to sum the available probabilities.
         double totalProbability = availableProbabilities.stream().mapToDouble(Double::doubleValue).sum();
+        
         double[] normalizedProbabilities = new double[availableProbabilities.size()];
+
+        // Each probability is normalized when we divide it for the total.
         for (int i = 0; i < availableProbabilities.size(); i++) {
             normalizedProbabilities[i] = availableProbabilities.get(i) / totalProbability;
         }
+
         return normalizedProbabilities;
     }
 
+    // Print in console.
     public void printRoutes() {
         System.out.println("Routes:");
         System.out.println("");
@@ -165,19 +168,18 @@ public class Ants {
         System.out.println("");
     }
 
-    public void printBestAndLastRoutes() {
+    // Print the route with minimun cost obtained.
+    public void printBestRoute() {
+
         double min = this.routes.get(0).getTotalCost();
+
         for (Route route : this.routes) {
             if (route.getTotalCost() < min){
                 min = route.getTotalCost();
             }
         }
-        System.out.println("Best route: " + min);
-        System.out.println("Last Route: " + this.routes.get(this.routes.size() - 1).getTotalCost());
-    }
 
-    public void printRoutesCount() {
-        System.out.println("Number of Ants Routes: " + this.routes.size());
+        System.out.println("Best route: " + min);
     }
 
     // GETTERS AND SETTERS

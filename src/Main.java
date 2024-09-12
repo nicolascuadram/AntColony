@@ -19,14 +19,10 @@ public class Main {
                 System.exit(0);
             }
 
-            // Execution
+            // EXECUTION
             Ants ants = new Ants(new Graph());
-            //ants.getGraph().printNodes();
-            //ants.getGraph().printWays();
-            //ants.generateRoutes(arg);
-            ants.generateRoutesForCost(arg);
-            ants.printBestAndLastRoutes();
-            ants.printRoutesCount();
+            ants.generateRoutes(arg);
+            ants.printBestRoute();
 
         }
         catch (NumberFormatException e) {

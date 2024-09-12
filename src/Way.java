@@ -19,7 +19,7 @@ public class Way {
 
     // Distance between nodes with Euclidian distance.
     private double euclidianDistance() {
-        return (int) Math.sqrt(Math.pow(this.node1.getX() - this.node2.getX(), 2) + Math.pow(this.node1.getY() - this.node2.getY(), 2));
+        return Math.sqrt(Math.pow(this.node1.getX() - this.node2.getX(), 2) + Math.pow(this.node1.getY() - this.node2.getY(), 2));
     }
 
     // GETTERS AND SETTERS
@@ -27,24 +27,12 @@ public class Way {
         return this.node1;
     }
 
-    public void setNode1(Node node) {
-        this.node1 = node;
-    }
-
     public Node getNode2() {
         return this.node2;
     }
 
-    public void setNode2(Node node) {
-        this.node2 = node;
-    }
-
     public double getCost() {
         return this.cost;
-    }
-
-    public void setCost(double cost) {
-        this.cost = cost;
     }
 
     public double getPheromones() {

@@ -18,11 +18,12 @@ public class Route {
         this.totalCost = 0;
     }
 
+    // Adding the way and cost to the route.
     public void addWay(Way way) {
-        this.ways.add(way);
         this.totalCost += way.getCost();
+        this.ways.add(way);
     }
-
+    
     public void printNodes() {
         System.out.println("Nodes:");
         for (Node node : this.nodes) {
@@ -30,30 +31,18 @@ public class Route {
         }
         System.out.println("");
     }
-
+    
     // GETTERS AND SETTERS
     public List<Node> getNodes() {
         return this.nodes;
     }
 
-    public void setNodes(List<Node> nodes) {
-        this.nodes = nodes;
-    }
-    
     public List<Way> getWays() {
         return this.ways;
     }
 
-    public void setWays(List<Way> ways) {
-        this.ways = ways;
-    }
-
     public double getTotalCost() {
         return this.totalCost;
-    }
-
-    public void setTotalCost(double totalCost) {
-        this.totalCost = totalCost;
     }
 
 }

@@ -35,7 +35,6 @@ public class Ants {
 
             // Create the route.
             Route route = createRoute(this.origin);
-            System.out.println("Route: " + i);
 
             // Update ways pheromones.
             this.graph.updatePheromones(route);

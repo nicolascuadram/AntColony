@@ -58,6 +58,15 @@ public class Node {
         return (way.getPheromones() / way.getCost());
     }
 
+    public Way getWayTo(Node node) {
+        for (Way way : this.ways) {
+            if (way.getNode2().equals(node) || way.getNode1().equals(node)){
+                return way;
+            }
+        }
+        return null;
+    }
+
     // GETTERS AND SETTERS
     public int getId() {
         return this.id;

@@ -105,11 +105,11 @@ public class Graph {
         return ways;
     }
 
-    public void updatePheromones(double evaporationRate, Route route) {
+    public void updatePheromones(Route route) {
         // evaporationRate = 0.01
         for (Way way : this.ways) {
 
-            double evaporation = ((1 - evaporationRate) * way.getPheromones());
+            double evaporation = ((1 - 0.01) * way.getPheromones());
             double pheromonesContribution = 0;
 
             if (route.getWays().contains(way)) {
@@ -121,9 +121,19 @@ public class Graph {
     }
 
     public void printNodes() {
+        System.out.println("Nodes:");
         for (Node node : this.nodes) {
             System.out.println("ID: " + node.getId() + ", X: " + node.getX() + ", Y: " + node.getY());
         }
+        System.out.println("");
+    }
+
+    public void printWays() {
+        System.out.println("Ways:");
+        for (Way way : this.ways) {
+            System.out.println("Node 1: " + way.getNode1().getId() + ", Node 2: " + way.getNode2().getId() + ", Cost: " + way.getCost() + ", Pheromones: " + way.getPheromones());
+        }
+        System.out.println("");
     }
 
     // GETTERS AND SETTERS
